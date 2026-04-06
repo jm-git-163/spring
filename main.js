@@ -1,74 +1,105 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const generateBtn = document.getElementById('generate-btn');
-  const lottoDisplay = document.getElementById('lotto-display');
-  const historyList = document.getElementById('history-list');
-  const themeToggle = document.getElementById('theme-toggle');
-  const body = document.body;
+const MODEL_URL = "https://teachablemachine.withgoogle.com/models/n3n2ylBwS/";
+let model, labelContainer, maxPredictions;
 
-  // 로또 번호 생성 함수
-  function generateLottoNumbers() {
-    const numbers = [];
-    while (numbers.length < 6) {
-      const num = Math.floor(Math.random() * 45) + 1;
-      if (!numbers.includes(num)) {
-        numbers.push(num);
-      }
-    }
-    return numbers.sort((a, b) => a - b);
+// 테마 관리
+const themeToggle = document.getElementById('theme-toggle');
+const body = document.body;
+
+themeToggle.addEventListener('click', () => {
+  if (body.classList.contains('light-mode')) {
+    body.classList.replace('light-mode', 'dark-mode');
+    localStorage.setItem('theme', 'dark-mode');
+  } else {
+    body.classList.replace('dark-mode', 'light-mode');
+    localStorage.setItem('theme', 'light-mode');
   }
+});
 
-  // 공 색상 클래스 결정
-  function getColorClass(num) {
-    if (num <= 10) return 'color-1';
-    if (num <= 20) return 'color-2';
-    if (num <= 30) return 'color-3';
-    if (num <= 40) return 'color-4';
-    return 'color-5';
-  }
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme) body.className = savedTheme;
 
-  // UI 업데이트
-  function updateUI(numbers) {
-    lottoDisplay.innerHTML = '';
-    numbers.forEach((num, index) => {
-      setTimeout(() => {
-        const ball = document.createElement('span');
-        ball.classList.add('ball', getColorClass(num));
-        ball.textContent = num;
-        lottoDisplay.appendChild(ball);
-      }, index * 100);
-    });
+// 모델 로드
+async function init() {
+  const modelURL = MODEL_URL + "model.json";
+  const metadataURL = MODEL_URL + "metadata.json";
+  model = await tmImage.load(modelURL, metadataURL);
+  maxPredictions = model.getTotalClasses();
+  console.log("모델 로드 완료");
+}
 
-    // 히스토리 추가
-    const historyItem = document.createElement('li');
-    historyItem.classList.add('history-item');
-    historyItem.textContent = `[${new Date().toLocaleTimeString()}] ${numbers.join(', ')}`;
-    historyList.prepend(historyItem);
+init();
+
+// 이미지 업로드 및 분석
+const imageUpload = document.getElementById('image-upload');
+const imagePreview = document.getElementById('image-preview');
+const uploadContainer = document.getElementById('upload-container');
+const uploadPlaceholder = document.getElementById('upload-placeholder');
+const loading = document.getElementById('loading');
+const resultSection = document.getElementById('result-section');
+const resultTitle = document.getElementById('result-title');
+const labelContainerUI = document.getElementById('label-container');
+const retryBtn = document.getElementById('retry-btn');
+
+uploadContainer.addEventListener('click', () => imageUpload.click());
+
+imageUpload.addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = async (event) => {
+    imagePreview.src = event.target.result;
+    imagePreview.hidden = false;
+    uploadPlaceholder.hidden = true;
     
-    if (historyList.children.length > 5) {
-      historyList.removeChild(historyList.lastChild);
-    }
-  }
+    // 분석 시작
+    loading.hidden = false;
+    resultSection.hidden = true;
+    
+    const image = new Image();
+    image.src = event.target.result;
+    image.onload = async () => {
+      const prediction = await model.predict(image);
+      displayResults(prediction);
+    };
+  };
+  reader.readAsDataURL(file);
+});
 
-  // 버튼 클릭 이벤트
-  generateBtn.addEventListener('click', () => {
-    const numbers = generateLottoNumbers();
-    updateUI(numbers);
+function displayResults(prediction) {
+  loading.hidden = true;
+  resultSection.hidden = false;
+  labelContainerUI.innerHTML = '';
+  
+  // 정렬: 확률이 높은 순서대로
+  prediction.sort((a, b) => b.probability - a.probability);
+  
+  const topResult = prediction[0];
+  resultTitle.innerText = `당신은 '${topResult.className}'상 입니다!`;
+
+  prediction.forEach(p => {
+    const probability = (p.probability * 100).toFixed(2);
+    const barClass = p.className === '강아지' ? 'dog-bar' : (p.className === '고양이' ? 'cat-bar' : 'others-bar');
+    
+    const barHTML = `
+      <div class="bar-container">
+        <div class="bar-label">
+          <span>${p.className}</span>
+          <span>${probability}%</span>
+        </div>
+        <div class="bar-outer">
+          <div class="bar-inner ${barClass}" style="width: ${probability}%"></div>
+        </div>
+      </div>
+    `;
+    labelContainerUI.insertAdjacentHTML('beforeend', barHTML);
   });
+}
 
-  // 테마 토글 이벤트
-  themeToggle.addEventListener('click', () => {
-    if (body.classList.contains('light-mode')) {
-      body.classList.replace('light-mode', 'dark-mode');
-      localStorage.setItem('theme', 'dark-mode');
-    } else {
-      body.classList.replace('dark-mode', 'light-mode');
-      localStorage.setItem('theme', 'light-mode');
-    }
-  });
-
-  // 저장된 테마 불러오기
-  const savedTheme = localStorage.getItem('theme');
-  if (savedTheme) {
-    body.className = savedTheme;
-  }
+retryBtn.addEventListener('click', () => {
+  imageUpload.value = '';
+  imagePreview.src = '';
+  imagePreview.hidden = true;
+  uploadPlaceholder.hidden = false;
+  resultSection.hidden = true;
 });

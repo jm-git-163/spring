@@ -3,50 +3,46 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>로또 번호 추천 게임</title>
-  <link href="/style.css" rel="stylesheet">
+  <title>🐶🐱 동물상 테스트 (Animal Face Test)</title>
+  <link href="./style.css" rel="stylesheet">
+  <!-- TensorFlow.js 및 Teachable Machine Image 라이브러리 -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
 </head>
 <body class="light-mode">
   <div class="container">
     <header>
-      <h1>🎰 로또 추천기</h1>
+      <h1>🐶🐱 동물상 테스트</h1>
       <button id="theme-toggle" class="btn-theme">🌓 테마 변경</button>
     </header>
     
     <main>
-      <div id="lotto-display" class="ball-container">
-        <span class="ball placeholder">?</span>
-        <span class="ball placeholder">?</span>
-        <span class="ball placeholder">?</span>
-        <span class="ball placeholder">?</span>
-        <span class="ball placeholder">?</span>
-        <span class="ball placeholder">?</span>
-      </div>
-      
-      <button id="generate-btn" class="btn-generate">번호 생성하기</button>
+      <section class="upload-section">
+        <p class="subtitle">나의 동물상을 확인해보세요!</p>
+        <div class="upload-container" id="upload-container">
+          <input type="file" id="image-upload" accept="image/*" hidden>
+          <div id="upload-placeholder" class="upload-placeholder">
+            <span class="upload-icon">📸</span>
+            <p>사진을 클릭하여 업로드하세요</p>
+          </div>
+          <img id="image-preview" src="" alt="미리보기" hidden>
+        </div>
+        <div id="loading" class="loading" hidden>
+          <div class="spinner"></div>
+          <p>인공지능이 분석 중입니다...</p>
+        </div>
+      </section>
+
+      <section id="result-section" class="result-section" hidden>
+        <h2 id="result-title"></h2>
+        <div id="label-container" class="label-container">
+          <!-- 결과 막대 그래프가 동적으로 생성됩니다. -->
+        </div>
+        <button id="retry-btn" class="btn-retry">다시 하기</button>
+      </section>
     </main>
 
-    <section class="history-section">
-      <h3>최근 생성된 번호</h3>
-      <ul id="history-list"></ul>
-    </section>
-
-    <section class="contact-section">
-      <h3>🤝 제휴 문의</h3>
-      <form action="https://formspree.io/f/xdapybdb" method="POST" id="contact-form">
-        <div class="form-group">
-          <label for="email">이메일 주소</label>
-          <input type="email" name="email" id="email" placeholder="example@email.com" required>
-        </div>
-        <div class="form-group">
-          <label for="message">문의 내용</label>
-          <textarea name="message" id="message" rows="4" placeholder="문의하실 내용을 입력해주세요." required></textarea>
-        </div>
-        <button type="submit" class="btn-submit">문의 보내기</button>
-      </form>
-    </section>
-
-    <section class="comments-section" style="margin-top: 2rem; border-top: 1px solid #eee; padding-top: 1.5rem; text-align: left;">
+    <section class="comments-section">
       <h3>💬 댓글</h3>
       <div id="disqus_thread"></div>
       <script>
