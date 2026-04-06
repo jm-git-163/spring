@@ -1,14 +1,14 @@
 :root {
-  --bg-color: #f0f7f4;
-  --container-bg: #ffffff;
-  --text-color: #2d3436;
-  --primary-color: #27ae60;
-  --primary-hover: #219150;
-  --accent-color: #e67e22;
-  --card-bg: #ecf0f1;
-  --card-match: #2ecc71;
-  --shadow: rgba(0, 0, 0, 0.1);
-  --font-main: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+  --primary-color: #2e7d32; /* 신뢰감을 주는 숲속 초록색 */
+  --primary-light: #e8f5e9;
+  --secondary-color: #f57c00; /* 주의 집중을 위한 오렌지색 */
+  --text-dark: #263238;
+  --text-muted: #546e7a;
+  --bg-soft: #fafafa;
+  --white: #ffffff;
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.05);
+  --border-radius: 16px;
+  --font-senior: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Malgun Gothic', sans-serif;
 }
 
 * {
@@ -18,181 +18,267 @@
 }
 
 body {
-  font-family: var(--font-main);
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  line-height: 1.6;
-  font-size: 18px; /* 시니어 대상 큰 폰트 */
+  font-family: var(--font-senior);
+  background-color: var(--bg-soft);
+  color: var(--text-dark);
+  line-height: 1.7;
+  font-size: 19px; /* 시니어를 위해 기본 폰트 크기 확대 */
+  word-break: keep-all; /* 한글 가독성 향상 */
 }
 
 .container {
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 0 20px;
 }
 
-/* Header & Nav */
-header {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-h1 {
-  font-size: 2.5rem;
-  color: var(--primary-color);
-  margin-bottom: 0.5rem;
-}
-
+/* Navigation */
 .nav-bar {
   display: flex;
   justify-content: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px 0;
+  border-bottom: 1px solid #eee;
 }
 
 .nav-link {
   text-decoration: none;
-  color: var(--text-color);
-  font-weight: bold;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  background: white;
-  box-shadow: 0 2px 4px var(--shadow);
+  color: var(--text-muted);
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 10px;
+  transition: all 0.2s;
 }
 
-.nav-link.active {
-  background: var(--primary-color);
-  color: white;
+.nav-link.active, .nav-link:hover {
+  color: var(--primary-color);
+  background-color: var(--primary-light);
+}
+
+/* Header */
+.main-header {
+  text-align: center;
+  padding: 60px 0 40px;
+}
+
+.main-header h1 {
+  font-size: 2.8rem;
+  color: var(--primary-color);
+  margin-bottom: 10px;
+  letter-spacing: -1px;
+}
+
+.tagline {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+}
+
+/* Ad Containers */
+.ad-container {
+  margin: 30px 0;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: var(--border-radius);
+  text-align: center;
+}
+
+.ad-label {
+  font-size: 0.8rem;
+  color: #ccc;
+  margin-bottom: 10px;
+  text-transform: uppercase;
 }
 
 /* Game Styles */
-.game-section {
-  background: white;
-  padding: 2rem;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px var(--shadow);
-  text-align: center;
-  margin-bottom: 3rem;
+.game-wrapper {
+  background: var(--white);
+  padding: 40px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-soft);
+  margin-bottom: 40px;
 }
 
-.game-info {
+.section-title {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.section-title h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.game-stats {
   display: flex;
-  justify-content: space-around;
-  margin-bottom: 1.5rem;
-  font-weight: bold;
-  font-size: 1.2rem;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 30px;
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: var(--primary-color);
 }
 
 .card-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
-  max-width: 500px;
+  gap: 20px;
+  max-width: 550px;
   margin: 0 auto;
 }
 
 .card {
   aspect-ratio: 1/1;
-  background-color: var(--card-bg);
-  border-radius: 12px;
+  background-color: #f1f3f4;
+  border-radius: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 2.5rem;
+  font-size: 3rem;
   cursor: pointer;
-  transition: transform 0.3s, background-color 0.3s;
-  user-select: none;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  transition: transform 0.2s, background-color 0.2s;
 }
 
 .card:hover {
-  transform: scale(1.05);
+  transform: translateY(-5px);
+  background-color: #e8eaed;
 }
 
 .card.flipped {
-  background-color: white;
-  box-shadow: inset 0 0 0 3px var(--primary-color);
+  background-color: var(--white);
+  border: 4px solid var(--primary-color);
 }
 
 .card.matched {
-  background-color: var(--card-match);
-  color: white;
+  background-color: var(--primary-light);
+  border: none;
   cursor: default;
-  transform: none;
+  opacity: 0.8;
 }
 
-.btn-main {
-  margin-top: 2rem;
-  padding: 1rem 2.5rem;
-  font-size: 1.3rem;
-  font-weight: bold;
+.btn-primary {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  margin: 40px auto 0;
+  padding: 18px;
+  font-size: 1.4rem;
+  font-weight: 800;
   border: none;
   border-radius: 50px;
   background-color: var(--primary-color);
   color: white;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+  box-shadow: 0 8px 25px rgba(46, 125, 50, 0.25);
 }
 
-.btn-main:hover {
-  background-color: var(--primary-hover);
+.btn-primary:hover {
+  background-color: #1b5e20;
+  transform: translateY(-2px);
 }
 
-/* Info Section (AdSense Content) */
-.article-section {
-  background: white;
-  padding: 2rem;
-  border-radius: 20px;
-  margin-bottom: 2rem;
-  text-align: left;
+.game-guide {
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 2px dashed #eee;
 }
 
-.article-section h2 {
+.game-guide h3 {
+  margin-bottom: 15px;
   color: var(--primary-color);
-  margin-bottom: 1rem;
-  border-left: 5px solid var(--primary-color);
-  padding-left: 15px;
 }
 
-.article-section p {
-  margin-bottom: 1.5rem;
+/* Article Cards (SEO/AdSense Content) */
+.expert-content {
+  margin-bottom: 60px;
+}
+
+.article-card {
+  background: var(--white);
+  padding: 40px;
+  border-radius: var(--border-radius);
+  margin-bottom: 30px;
+  box-shadow: var(--shadow-soft);
+}
+
+.article-card h2 {
+  font-size: 1.7rem;
+  margin-bottom: 20px;
+  color: var(--primary-color);
 }
 
 .info-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: 25px;
+  margin-top: 25px;
 }
 
-/* Ad Space */
-.ad-space {
-  margin: 2rem 0;
-  padding: 1rem;
-  background: #f9f9f9;
-  border: 1px dashed #ccc;
-  text-align: center;
-  font-size: 0.8rem;
-  color: #999;
+.info-box {
+  padding: 25px;
+  border-radius: 15px;
+}
+
+.info-box.green { background: #f1f8e9; border: 1px solid #dcedc8; }
+.info-box.red { background: #fff3e0; border: 1px solid #ffe0b2; }
+
+.info-box h3 {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+}
+
+.info-box ul {
+  padding-left: 20px;
+}
+
+.info-box li {
+  margin-bottom: 10px;
+}
+
+.food-tips {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.food-item {
+  padding: 15px;
+  background: #fdfdfd;
+  border-left: 5px solid var(--secondary-color);
+  border-radius: 0 10px 10px 0;
+}
+
+/* Community Section */
+.community-section {
+  background: var(--white);
+  padding: 40px;
+  border-radius: var(--border-radius);
+  margin-bottom: 60px;
 }
 
 /* Footer */
-footer {
+.main-footer {
+  padding: 60px 0;
+  border-top: 1px solid #eee;
   text-align: center;
-  padding: 2rem;
-  border-top: 1px solid #ddd;
-  margin-top: 3rem;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.footer-links {
+  margin-top: 15px;
 }
 
 .footer-links a {
+  color: var(--primary-color);
   text-decoration: none;
-  color: #666;
   margin: 0 10px;
-  font-size: 0.9rem;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 650px) {
   .info-grid { grid-template-columns: 1fr; }
   .card-grid { gap: 10px; }
-  .card { font-size: 2rem; }
-  h1 { font-size: 2rem; }
+  .main-header h1 { font-size: 2rem; }
+  .article-card { padding: 25px; }
 }

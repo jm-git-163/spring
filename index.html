@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>시니어 뇌 건강 프로젝트 - 치매 예방 기억력 게임</title>
-  <meta name="description" content="어르신들의 두뇌 건강을 위한 치매 예방 기억력 테스트 게임과 건강 정보를 제공합니다. 매일 5분 투자로 인지 능력을 향상시키세요.">
+  <title>시니어 두뇌 활력 프로젝트 | 치매 예방 기억력 훈련 및 건강 가이드</title>
+  <meta name="description" content="어르신들의 인지 능력을 향상시키는 과학적인 기억력 게임과 보건복지부 권장 치매 예방 정보를 제공합니다. 매일 5분 투자로 건강한 뇌를 유지하세요.">
   <meta name="google-adsense-account" content="ca-pub-5621749458356949">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5621749458356949"
      crossorigin="anonymous"></script>
@@ -12,79 +12,118 @@
 </head>
 <body>
   <div class="container">
+    <!-- 상단 내비게이션: 구글 권장 사항인 명확한 구조 -->
     <nav class="nav-bar">
-      <a href="./index.html" class="nav-link active">게임 홈</a>
+      <a href="./index.html" class="nav-link active">두뇌 게임 홈</a>
       <a href="./about.html" class="nav-link">프로젝트 소개</a>
-      <a href="./privacy.html" class="nav-link">개인정보 보호</a>
+      <a href="./privacy.html" class="nav-link">개인정보 처리방침</a>
     </nav>
 
-    <header>
-      <h1>🧠 시니어 뇌 건강 훈련</h1>
-      <p>매일매일 즐거운 두뇌 운동, 기억력 향상 게임</p>
+    <header class="main-header">
+      <h1>🧠 시니어 두뇌 활력 프로젝트</h1>
+      <p class="tagline">과학적인 훈련으로 지키는 어르신의 건강한 기억력</p>
     </header>
 
-    <div class="ad-space">광고가 게재될 공간입니다.</div>
+    <!-- 상단 광고 영역 (구글 승인 후 자동 게재) -->
+    <div class="ad-container top-ad">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-5621749458356949"
+           data-ad-slot="YOUR_AD_SLOT_HERE"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+    </div>
 
     <main>
-      <section class="game-section">
-        <h2>기억력 카드 맞추기</h2>
-        <p style="margin-bottom: 1rem;">똑같은 그림의 카드 두 장을 찾아 뒤집어주세요!</p>
+      <!-- 게임 섹션: 전문적인 설명과 함께 배치 -->
+      <section class="game-wrapper">
+        <div class="section-title">
+          <h2>오늘의 두뇌 훈련: 카드 기억력 테스트</h2>
+          <p>전두엽을 자극하여 단기 기억력을 강화하는 인지 훈련입니다.</p>
+        </div>
         
-        <div class="game-info">
-          <div>시도 횟수: <span id="moves">0</span></div>
-          <div>남은 쌍: <span id="pairs">8</span></div>
-        </div>
-
-        <div class="card-grid" id="card-grid">
-          <!-- 카드는 자바스크립트로 생성됩니다 -->
-        </div>
-
-        <button class="btn-main" onclick="resetGame()">게임 다시 시작하기</button>
-      </section>
-
-      <section class="article-section">
-        <h2>어르신을 위한 치매 예방 가이드</h2>
-        <p>치매는 예방이 가장 중요합니다. 보건복지부에서 권장하는 <strong>치매 예방 수칙 3.3.3</strong>을 실천하여 건강한 노후를 준비하세요.</p>
-        
-        <div class="info-grid">
-          <div>
-            <h3>✅ 3권 (권장하는 것)</h3>
-            <ul>
-              <li><strong>운동:</strong> 일주일에 3번 이상 걷기</li>
-              <li><strong>식사:</strong> 생선과 채소 골고루 먹기</li>
-              <li><strong>독서:</strong> 부지런히 읽고 쓰기</li>
-            </ul>
+        <div class="game-container">
+          <div class="game-stats">
+            <div class="stat-item">활동 횟수: <span id="moves">0</span>회</div>
+            <div class="stat-item">찾아야 할 쌍: <span id="pairs">8</span>쌍</div>
           </div>
-          <div>
-            <h3>❌ 3금 (금지하는 것)</h3>
-            <ul>
-              <li><strong>술:</strong> 술은 적게 마시기</li>
-              <li><strong>담배:</strong> 금연하기</li>
-              <li><strong>머리 부상:</strong> 머리 다치지 않게 조심하기</li>
-            </ul>
+
+          <div class="card-grid" id="card-grid">
+            <!-- 자바스크립트로 생성됨 -->
+          </div>
+
+          <button class="btn-primary" onclick="resetGame()">새로운 게임 시작하기</button>
+        </div>
+
+        <div class="game-guide">
+          <h3>💡 이 게임이 뇌 건강에 좋은 이유</h3>
+          <p>카드 뒤집기 게임은 <strong>'작업 기억(Working Memory)'</strong>을 집중적으로 사용하는 훈련입니다. 흩어져 있는 정보들 사이의 연관성을 찾아내고 위치를 기억하는 과정에서 뇌세포 간의 연결망인 시냅스가 활성화됩니다. 매일 10분 정도의 반복적인 훈련은 경도인지장애 예방에 실질적인 도움을 줄 수 있습니다.</p>
+        </div>
+      </section>
+
+      <!-- 전문 콘텐츠 섹션: 애드센스 승인을 위한 텍스트 보강 (500자 이상) -->
+      <section class="expert-content">
+        <div class="article-card">
+          <h2>🏥 보건당국이 권장하는 치매 예방 '3.3.3 수칙'</h2>
+          <p>치매는 치료보다 예방이 최우선입니다. 일상생활에서 쉽게 실천할 수 있는 9가지 습관을 기억하세요.</p>
+          
+          <div class="info-grid">
+            <div class="info-box green">
+              <h3>3권 (즐겁게 실천하세요)</h3>
+              <ul>
+                <li><strong>일주일에 3번 이상 걷기:</strong> 뇌 혈류량을 늘려 인지 기능을 보존합니다.</li>
+                <li><strong>생선과 채소 골고루 먹기:</strong> 뇌에 필요한 영양소를 충분히 공급합니다.</li>
+                <li><strong>부지런히 읽고 쓰기:</strong> 뇌를 끊임없이 자극하여 퇴화를 막습니다.</li>
+              </ul>
+            </div>
+            <div class="info-box red">
+              <h3>3금 (피해야 할 나쁜 습관)</h3>
+              <ul>
+                <li><strong>술은 적게 마시기:</strong> 알코올은 뇌세포를 직접적으로 손상시킵니다.</li>
+                <li><strong>담배는 끊기:</strong> 흡연은 뇌혈관 질환의 위험을 3배 이상 높입니다.</li>
+                <li><strong>머리 부상 조심하기:</strong> 낙상이나 사고로 인한 충격은 뇌 건강에 치명적입니다.</li>
+              </ul>
+            </div>
           </div>
         </div>
 
-        <h3 style="margin-top: 1.5rem;">기억력 게임이 왜 도움이 될까요?</h3>
-        <p>카드 맞추기와 같은 인지 훈련 게임은 뇌의 전두엽을 자극하여 단기 기억력을 강화하고 집중력을 높여줍니다. 반복적인 두뇌 자극은 신경 세포 간의 연결을 튼튼하게 하여 인지 기능 저하를 늦추는 데 큰 도움이 됩니다.</p>
+        <div class="article-card accent">
+          <h2>🥗 뇌를 젊게 만드는 '슈퍼 푸드' 가이드</h2>
+          <p>우리가 먹는 음식이 곧 우리의 뇌를 만듭니다. 항산화 성분이 풍부한 식단을 구성해 보세요.</p>
+          <div class="food-tips">
+            <div class="food-item">
+              <strong>1. 견과류 (호두, 아몬드):</strong> 불포화지방산이 풍부하여 뇌 혈관의 탄력을 유지해 줍니다.
+            </div>
+            <div class="food-item">
+              <strong>2. 베리류 (블루베리, 딸기):</strong> 안토시아닌 성분이 뇌세포의 산화 스트레스를 줄여 노화를 방지합니다.
+            </div>
+            <div class="food-item">
+              <strong>3. 등푸른 생선 (고등어, 연어):</strong> 오메가-3 지방산인 DHA와 EPA가 풍부해 기억력 증진에 탁월합니다.
+            </div>
+            <div class="food-item">
+              <strong>4. 녹색 잎채소 (시금치, 케일):</strong> 비타민 K와 엽산이 풍부해 인지 기능 저하 속도를 늦춰줍니다.
+            </div>
+          </div>
+        </div>
+
+        <div class="article-card">
+          <h2>👨‍⚕️ 전문가가 조언하는 시니어 마음 건강</h2>
+          <p>두뇌 건강은 마음 건강과 밀접하게 연결되어 있습니다. 외로움과 우울감은 인지 기능을 떨어뜨리는 주요 원인 중 하나입니다. 가족, 친구들과 정기적으로 대화를 나누고 취미 생활을 즐기는 사회적 활동은 뇌에 매우 긍정적인 자극을 줍니다. 본 사이트의 게임을 가족과 함께 즐기며 점수 내기를 해보는 것도 좋은 사회적 자극이 될 수 있습니다.</p>
+        </div>
       </section>
 
-      <div class="ad-space">광고가 게재될 공간입니다.</div>
-
-      <section class="article-section" style="background: #e8f5e9;">
-        <h2>뇌 건강에 좋은 음식 5가지</h2>
-        <ol>
-          <li><strong>호두:</strong> 오메가-3가 풍부하여 뇌 기능 향상에 도움</li>
-          <li><strong>블루베리:</strong> 항산화 성분이 뇌세포 노화 방지</li>
-          <li><strong>시금치:</strong> 엽산 성분이 치매 위험 감소</li>
-          <li><strong>등푸른 생선:</strong> DHA 성분이 기억력 증진</li>
-          <li><strong>강황(카레):</strong> 커큐민 성분이 뇌 혈류 개선</li>
-        </ol>
-      </section>
+      <!-- 중간 광고 영역 -->
+      <div class="ad-container mid-ad">
+        <p class="ad-label">광고</p>
+        <div class="ad-placeholder">승인 후 광고가 게재됩니다.</div>
+      </div>
     </main>
 
-    <section class="comments-section" style="background:white; padding: 2rem; border-radius: 20px;">
-      <h3 style="margin-bottom: 1rem;">💬 응원의 한마디</h3>
+    <!-- 소통 섹션: 사용자 참여 유도 -->
+    <section class="community-section">
+      <h2>💬 건강 소통창</h2>
+      <p>오늘 게임 결과는 어떠셨나요? 다른 분들과 응원을 나누어 보세요.</p>
       <div id="disqus_thread"></div>
       <script>
           (function() { 
@@ -96,11 +135,16 @@
       </script>
     </section>
 
-    <footer>
-      <p>&copy; 2026 시니어 뇌 건강 프로젝트. 어르신의 건강한 삶을 응원합니다.</p>
-      <div class="footer-links">
-        <a href="./about.html">회사 소개</a> | 
-        <a href="./privacy.html">개인정보 처리방침</a>
+    <!-- 하단 정보: 구글 신뢰도 지표 (연락처, 저작권 등) -->
+    <footer class="main-footer">
+      <div class="footer-content">
+        <p>&copy; 2026 시니어 두뇌 활력 프로젝트. 모든 콘텐츠는 건강 증진 목적으로 제작되었습니다.</p>
+        <p>문의: <a href="mailto:contact@senior-brain.com">contact@senior-brain.com</a></p>
+        <div class="footer-links">
+          <a href="./about.html">회사 소개</a> | 
+          <a href="./privacy.html">개인정보 처리방침</a> | 
+          <a href="https://adsense-ko.googleblog.com/2012/04/blog-post_25.html" target="_blank" rel="nofollow">운영 정책 참조</a>
+        </div>
       </div>
     </footer>
   </div>

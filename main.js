@@ -55,7 +55,9 @@ function checkMatch() {
     isBusy = false;
 
     if (matchedPairs === 8) {
-      setTimeout(() => alert('축하합니다! 모든 쌍을 맞추셨습니다. 두뇌가 더 건강해졌어요!'), 500);
+      setTimeout(() => {
+        alert('🎉 대단하십니다! 모든 카드를 맞추셨습니다.\n오늘의 두뇌 훈련이 성공적으로 완료되었습니다.');
+      }, 500);
     }
   } else {
     setTimeout(() => {
@@ -82,7 +84,9 @@ function resetGame() {
   cards.forEach(emoji => {
     cardGrid.appendChild(createCard(emoji));
   });
+  
+  console.log("Game Reset Complete");
 }
 
-// 초기 게임 시작
+// Initialize on Load
 document.addEventListener('DOMContentLoaded', resetGame);
