@@ -1,19 +1,21 @@
-const emojis = ['🍎', '🍎', '🍇', '🍇', '🍊', '🍊', '🍓', '🍓', '🥕', '🥕', '🥦', '🥦', '🌽', '🌽', '🍄', '🍄'];
+// 게임 이모지 풀 (다양한 난이도를 위해 넉넉히 준비)
+const emojiPool = ['🍎', '🍇', '🍊', '🍓', '🥕', '🥦', '🌽', '🍄', '🥝', '🫐', '🍍', '🍑', '🍋', '🍉', '🥑', '🍆', '🍔', '🍕', '🎾', '⚽', '🎨', '🎬', '🚗', '🚲'];
+
+let currentLevel = 1;
 let cards = [];
 let flippedCards = [];
 let matchedPairs = 0;
 let moves = 0;
 let isBusy = false;
+let totalPairs = 8; // 레벨 1 기본값
 
 const cardGrid = document.getElementById('card-grid');
 const movesDisplay = document.getElementById('moves');
 const pairsDisplay = document.getElementById('pairs');
+const levelDisplay = document.getElementById('current-level');
 
-// Web Audio API를 이용한 효과음 및 BGM 생성기
+// Web Audio API를 이용한 효과음 생성기
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-let bgmOscillators = [];
-let isBgmPlaying = false;
-let bgmInterval;
 
 function playSound(type) {
   if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -56,52 +58,6 @@ function playSound(type) {
   }
 }
 
-// 부드러운 배경음악 루프 생성 (마림바 스타일)
-function startBgm() {
-  if (isBgmPlaying) return;
-  isBgmPlaying = true;
-  const notes = [261.63, 329.63, 392.00, 523.25]; // C4, E4, G4, C5
-  let step = 0;
-
-  bgmInterval = setInterval(() => {
-    const now = audioCtx.currentTime;
-    const osc = audioCtx.createOscillator();
-    const g = audioCtx.createGain();
-    osc.connect(g);
-    g.connect(audioCtx.destination);
-    
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(notes[step % notes.length], now);
-    g.gain.setValueAtTime(0.02, now);
-    g.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
-    
-    osc.start(now);
-    osc.stop(now + 0.5);
-    step++;
-  }, 600);
-}
-
-function stopBgm() {
-  isBgmPlaying = false;
-  clearInterval(bgmInterval);
-}
-
-// BGM 토글 이벤트
-const bgmToggle = document.getElementById('bgm-toggle');
-bgmToggle.addEventListener('click', () => {
-  if (audioCtx.state === 'suspended') audioCtx.resume();
-  
-  if (!isBgmPlaying) {
-    startBgm();
-    bgmToggle.innerText = '🔇 배경음악 끄기';
-    bgmToggle.classList.add('active');
-  } else {
-    stopBgm();
-    bgmToggle.innerText = '🎵 배경음악 켜기';
-    bgmToggle.classList.remove('active');
-  }
-});
-
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -116,10 +72,7 @@ function createCard(emoji) {
   card.dataset.emoji = emoji;
   card.innerText = '?';
   card.addEventListener('click', () => {
-    // 사운드 컨텍스트 재개 (브라우저 정책 대응)
-    if (audioCtx.state === 'suspended') {
-      audioCtx.resume();
-    }
+    if (audioCtx.state === 'suspended') audioCtx.resume();
     flipCard(card);
   });
   return card;
@@ -150,11 +103,11 @@ function checkMatch() {
     card1.classList.add('matched');
     card2.classList.add('matched');
     matchedPairs++;
-    pairsDisplay.innerText = 8 - matchedPairs;
+    pairsDisplay.innerText = totalPairs - matchedPairs;
     flippedCards = [];
     isBusy = false;
 
-    if (matchedPairs === 8) {
+    if (matchedPairs === totalPairs) {
       setTimeout(celebrate, 500);
     }
   } else {
@@ -173,28 +126,50 @@ function checkMatch() {
 function celebrate() {
   playSound('success');
   const overlay = document.getElementById('celebration-overlay');
+  const levelMsg = document.getElementById('level-complete-msg');
+  levelMsg.innerText = `레벨 ${currentLevel}을 완료하셨습니다!`;
   overlay.classList.add('active');
-  
-  // 꽃가루 효과 대신 간단한 애니메이션 효과 등 추가 가능
-  console.log("Celebration Event Triggered");
 }
 
-function closeCelebration() {
+function nextLevel() {
+  currentLevel++;
   document.getElementById('celebration-overlay').classList.remove('active');
   resetGame();
 }
 
-function resetGame() {
+function resetGame(isFullReset = false) {
+  if (isFullReset) currentLevel = 1;
+  
   cardGrid.innerHTML = '';
-  cards = shuffle([...emojis]);
+  levelDisplay.innerText = currentLevel;
+  
+  // 레벨에 따른 카드 수 조정
+  // Level 1: 4x4 (8 pairs)
+  // Level 2: 4x5 (10 pairs)
+  // Level 3: 4x6 (12 pairs)
+  // Level 4+: 4x8 (16 pairs)
+  if (currentLevel === 1) totalPairs = 8;
+  else if (currentLevel === 2) totalPairs = 10;
+  else if (currentLevel === 3) totalPairs = 12;
+  else totalPairs = 16;
+
+  // 카드 그리드 열 수 조정
+  if (currentLevel === 2) cardGrid.style.gridTemplateColumns = 'repeat(5, 1fr)';
+  else if (currentLevel >= 3) cardGrid.style.gridTemplateColumns = 'repeat(4, 1fr)';
+  else cardGrid.style.gridTemplateColumns = 'repeat(4, 1fr)';
+
+  // 랜덤 이모지 선택
+  const selectedEmojis = shuffle([...emojiPool]).slice(0, totalPairs);
+  const gameEmojis = shuffle([...selectedEmojis, ...selectedEmojis]);
+
   matchedPairs = 0;
   moves = 0;
   movesDisplay.innerText = 0;
-  pairsDisplay.innerText = 8;
+  pairsDisplay.innerText = totalPairs;
   flippedCards = [];
   isBusy = false;
 
-  cards.forEach(emoji => {
+  gameEmojis.forEach(emoji => {
     cardGrid.appendChild(createCard(emoji));
   });
   
@@ -203,4 +178,4 @@ function resetGame() {
 }
 
 // Initialize on Load
-document.addEventListener('DOMContentLoaded', resetGame);
+document.addEventListener('DOMContentLoaded', () => resetGame(true));
