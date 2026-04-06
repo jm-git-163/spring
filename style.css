@@ -73,6 +73,27 @@ body {
   color: var(--text-muted);
 }
 
+.audio-controls {
+  margin-top: 20px;
+}
+
+.btn-audio {
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: 2px solid var(--primary-color);
+  border-radius: 30px;
+  background: white;
+  color: var(--primary-color);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-audio.active {
+  background: var(--primary-color);
+  color: white;
+}
+
 /* Ad Containers */
 .ad-container {
   margin: 30px 0;

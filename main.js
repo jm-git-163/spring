@@ -9,39 +9,38 @@ const cardGrid = document.getElementById('card-grid');
 const movesDisplay = document.getElementById('moves');
 const pairsDisplay = document.getElementById('pairs');
 
-// Web Audio API를 이용한 효과음 생성기
+// Web Audio API를 이용한 효과음 및 BGM 생성기
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+let bgmOscillators = [];
+let isBgmPlaying = false;
+let bgmInterval;
 
 function playSound(type) {
+  if (audioCtx.state === 'suspended') audioCtx.resume();
   const oscillator = audioCtx.createOscillator();
   const gainNode = audioCtx.createGain();
-
   oscillator.connect(gainNode);
   gainNode.connect(audioCtx.destination);
-
   const now = audioCtx.currentTime;
 
   if (type === 'match') {
-    // 맞았을 때: 밝은 딩동댕 소리
     oscillator.type = 'sine';
-    oscillator.frequency.setValueAtTime(523.25, now); // C5
-    oscillator.frequency.exponentialRampToValueAtTime(880, now + 0.1); // A5
+    oscillator.frequency.setValueAtTime(523.25, now);
+    oscillator.frequency.exponentialRampToValueAtTime(880, now + 0.1);
     gainNode.gain.setValueAtTime(0.1, now);
     gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
     oscillator.start(now);
     oscillator.stop(now + 0.3);
   } else if (type === 'error') {
-    // 틀렸을 때: 짧은 저음 삑
     oscillator.type = 'triangle';
-    oscillator.frequency.setValueAtTime(220, now); // A3
+    oscillator.frequency.setValueAtTime(220, now);
     oscillator.frequency.linearRampToValueAtTime(110, now + 0.1);
     gainNode.gain.setValueAtTime(0.1, now);
     gainNode.gain.linearRampToValueAtTime(0.01, now + 0.2);
     oscillator.start(now);
     oscillator.stop(now + 0.2);
   } else if (type === 'success') {
-    // 성공했을 때: 화려한 팡파르
-    const frequencies = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+    const frequencies = [523.25, 659.25, 783.99, 1046.50];
     frequencies.forEach((f, i) => {
       const osc = audioCtx.createOscillator();
       const g = audioCtx.createGain();
@@ -56,6 +55,52 @@ function playSound(type) {
     });
   }
 }
+
+// 부드러운 배경음악 루프 생성 (마림바 스타일)
+function startBgm() {
+  if (isBgmPlaying) return;
+  isBgmPlaying = true;
+  const notes = [261.63, 329.63, 392.00, 523.25]; // C4, E4, G4, C5
+  let step = 0;
+
+  bgmInterval = setInterval(() => {
+    const now = audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    osc.connect(g);
+    g.connect(audioCtx.destination);
+    
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(notes[step % notes.length], now);
+    g.gain.setValueAtTime(0.02, now);
+    g.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+    
+    osc.start(now);
+    osc.stop(now + 0.5);
+    step++;
+  }, 600);
+}
+
+function stopBgm() {
+  isBgmPlaying = false;
+  clearInterval(bgmInterval);
+}
+
+// BGM 토글 이벤트
+const bgmToggle = document.getElementById('bgm-toggle');
+bgmToggle.addEventListener('click', () => {
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  
+  if (!isBgmPlaying) {
+    startBgm();
+    bgmToggle.innerText = '🔇 배경음악 끄기';
+    bgmToggle.classList.add('active');
+  } else {
+    stopBgm();
+    bgmToggle.innerText = '🎵 배경음악 켜기';
+    bgmToggle.classList.remove('active');
+  }
+});
 
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
