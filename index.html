@@ -1,127 +1,106 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🐶🐱 동물상 테스트 (Animal Face Test) - AI 사진 분석</title>
-  <meta name="description" content="인공지능(AI)이 분석하는 동물상 테스트! 당신은 강아지상일까요, 고양이상일까요? 지금 바로 확인해보세요.">
-  <link href="./style.css" rel="stylesheet">
-  <!-- TensorFlow.js 및 Teachable Machine Image 라이브러리 -->
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>시니어 뇌 건강 프로젝트 - 치매 예방 기억력 게임</title>
+  <meta name="description" content="어르신들의 두뇌 건강을 위한 치매 예방 기억력 테스트 게임과 건강 정보를 제공합니다. 매일 5분 투자로 인지 능력을 향상시키세요.">
+  <link rel="stylesheet" href="./style.css">
 </head>
-<body class="light-mode">
+<body>
   <div class="container">
     <nav class="nav-bar">
-      <a href="./index.html" class="nav-link active">홈</a>
-      <a href="./about.html" class="nav-link">소개</a>
-      <a href="./privacy.html" class="nav-link">개인정보 처리방침</a>
+      <a href="./index.html" class="nav-link active">게임 홈</a>
+      <a href="./about.html" class="nav-link">프로젝트 소개</a>
+      <a href="./privacy.html" class="nav-link">개인정보 보호</a>
     </nav>
+
     <header>
-      <h1>🐶🐱 동물상 테스트</h1>
-      <button id="theme-toggle" class="btn-theme">🌓 테마 변경</button>
+      <h1>🧠 시니어 뇌 건강 훈련</h1>
+      <p>매일매일 즐거운 두뇌 운동, 기억력 향상 게임</p>
     </header>
-    
-    <div class="ad-placeholder top-ad">
-      <!-- 구글 애드센스 상단 광고 코드를 여기에 삽입하세요 -->
-      <p style="font-size: 0.8rem; color: #999;">광고 공간</p>
-    </div>
+
+    <div class="ad-space">광고가 게재될 공간입니다.</div>
 
     <main>
-      <section class="upload-section">
-        <p class="subtitle">인공지능이 분석하는 나의 동물상</p>
-        <div class="upload-container" id="upload-container">
-          <input type="file" id="image-upload" accept="image/*" hidden>
-          <div id="upload-placeholder" class="upload-placeholder">
-            <span class="upload-icon">📸</span>
-            <p>사진을 클릭하여 업로드하세요</p>
-          </div>
-          <img id="image-preview" src="" alt="미리보기" hidden>
-        </div>
-        <div id="loading" class="loading" hidden>
-          <div class="spinner"></div>
-          <p>인공지능이 분석 중입니다...</p>
-        </div>
-      </section>
-
-      <section id="result-section" class="result-section" hidden>
-        <h2 id="result-title"></h2>
-        <div id="label-container" class="label-container">
-          <!-- 결과 막대 그래프가 동적으로 생성됩니다. -->
-        </div>
-        <button id="retry-btn" class="btn-retry">다시 하기</button>
-      </section>
-
-      <section class="info-section">
-        <h2>인공지능 동물상 테스트란?</h2>
-        <p>나의 얼굴 특징이 어떤 동물과 가장 닮았는지 궁금하신가요? 구글의 <strong>Teachable Machine</strong> AI 모델을 통해 당신의 동물상을 즉석에서 분석해 드립니다. 강아지상, 고양이상뿐만 아니라 다양한 동물상의 특징을 딥러닝 기술로 정확하게 찾아냅니다.</p>
+      <section class="game-section">
+        <h2>기억력 카드 맞추기</h2>
+        <p style="margin-bottom: 1rem;">똑같은 그림의 카드 두 장을 찾아 뒤집어주세요!</p>
         
-        <h3>사용 방법</h3>
-        <p>1. 정면이 잘 보이는 사진을 준비합니다.<br>
-           2. 카메라 아이콘을 눌러 사진을 업로드합니다.<br>
-           3. 인공지능 분석이 끝날 때까지 잠시 기다립니다.<br>
-           4. 분석된 결과를 친구들과 공유하며 즐겨보세요!</p>
+        <div class="game-info">
+          <div>시도 횟수: <span id="moves">0</span></div>
+          <div>남은 쌍: <span id="pairs">8</span></div>
+        </div>
 
-        <h3>왜 우리 서비스를 이용해야 할까요?</h3>
-        <ul>
-          <li><strong>안전한 익명성:</strong> 로그인이 필요 없으며 사진 데이터는 수집되지 않습니다.</li>
-          <li><strong>빠른 속도:</strong> 복잡한 절차 없이 클릭 한 번으로 분석이 끝납니다.</li>
-          <li><strong>최신 AI 기술:</strong> 구글의 텐서플로우 기술을 활용하여 높은 정확도를 자랑합니다.</li>
-        </ul>
+        <div class="card-grid" id="card-grid">
+          <!-- 카드는 자바스크립트로 생성됩니다 -->
+        </div>
+
+        <button class="btn-main" onclick="resetGame()">게임 다시 시작하기</button>
+      </section>
+
+      <section class="article-section">
+        <h2>어르신을 위한 치매 예방 가이드</h2>
+        <p>치매는 예방이 가장 중요합니다. 보건복지부에서 권장하는 <strong>치매 예방 수칙 3.3.3</strong>을 실천하여 건강한 노후를 준비하세요.</p>
+        
+        <div class="info-grid">
+          <div>
+            <h3>✅ 3권 (권장하는 것)</h3>
+            <ul>
+              <li><strong>운동:</strong> 일주일에 3번 이상 걷기</li>
+              <li><strong>식사:</strong> 생선과 채소 골고루 먹기</li>
+              <li><strong>독서:</strong> 부지런히 읽고 쓰기</li>
+            </ul>
+          </div>
+          <div>
+            <h3>❌ 3금 (금지하는 것)</h3>
+            <ul>
+              <li><strong>술:</strong> 술은 적게 마시기</li>
+              <li><strong>담배:</strong> 금연하기</li>
+              <li><strong>머리 부상:</strong> 머리 다치지 않게 조심하기</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 style="margin-top: 1.5rem;">기억력 게임이 왜 도움이 될까요?</h3>
+        <p>카드 맞추기와 같은 인지 훈련 게임은 뇌의 전두엽을 자극하여 단기 기억력을 강화하고 집중력을 높여줍니다. 반복적인 두뇌 자극은 신경 세포 간의 연결을 튼튼하게 하여 인지 기능 저하를 늦추는 데 큰 도움이 됩니다.</p>
+      </section>
+
+      <div class="ad-space">광고가 게재될 공간입니다.</div>
+
+      <section class="article-section" style="background: #e8f5e9;">
+        <h2>뇌 건강에 좋은 음식 5가지</h2>
+        <ol>
+          <li><strong>호두:</strong> 오메가-3가 풍부하여 뇌 기능 향상에 도움</li>
+          <li><strong>블루베리:</strong> 항산화 성분이 뇌세포 노화 방지</li>
+          <li><strong>시금치:</strong> 엽산 성분이 치매 위험 감소</li>
+          <li><strong>등푸른 생선:</strong> DHA 성분이 기억력 증진</li>
+          <li><strong>강황(카레):</strong> 커큐민 성분이 뇌 혈류 개선</li>
+        </ol>
       </section>
     </main>
 
-    <div class="ad-placeholder bottom-ad">
-      <!-- 구글 애드센스 하단 광고 코드를 여기에 삽입하세요 -->
-      <p style="font-size: 0.8rem; color: #999;">광고 공간</p>
-    </div>
-
-    <section class="contact-section">
-      <h3>🤝 제휴 및 서비스 문의</h3>
-      <form action="https://formspree.io/f/xdapybdb" method="POST" id="contact-form">
-        <div class="form-group">
-          <label for="email">이메일 주소</label>
-          <input type="email" name="email" id="email" placeholder="example@email.com" required>
-        </div>
-        <div class="form-group">
-          <label for="message">문의 내용</label>
-          <textarea name="message" id="message" rows="4" placeholder="문의하실 내용을 입력해주세요." required></textarea>
-        </div>
-        <button type="submit" class="btn-submit">문의 보내기</button>
-      </form>
-    </section>
-
-    <section class="comments-section">
-      <h3>💬 댓글</h3>
+    <section class="comments-section" style="background:white; padding: 2rem; border-radius: 20px;">
+      <h3 style="margin-bottom: 1rem;">💬 응원의 한마디</h3>
       <div id="disqus_thread"></div>
       <script>
-          /**
-          *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-          *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
-          /*
-          var disqus_config = function () {
-          this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-          this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-          };
-          */
-          (function() { // DON'T EDIT BELOW THIS LINE
+          (function() { 
           var d = document, s = d.createElement('script');
           s.src = 'https://productbuilder-jqbafca0xd.disqus.com/embed.js';
           s.setAttribute('data-timestamp', +new Date());
           (d.head || d.body).appendChild(s);
           })();
       </script>
-      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     </section>
 
-    <footer class="site-footer">
-      <p>&copy; 2026 동물상 테스트. All rights reserved.</p>
+    <footer>
+      <p>&copy; 2026 시니어 뇌 건강 프로젝트. 어르신의 건강한 삶을 응원합니다.</p>
       <div class="footer-links">
-        <a href="./about.html">소개</a> | 
+        <a href="./about.html">회사 소개</a> | 
         <a href="./privacy.html">개인정보 처리방침</a>
       </div>
     </footer>
   </div>
-  <script defer src="./main.js"></script>
+  <script src="./main.js"></script>
 </body>
 </html>

@@ -1,106 +1,88 @@
-// v1.0.1: Updated Teachable Machine Model URL
-const MODEL_URL = "https://teachablemachine.withgoogle.com/models/n3n2ylBwS/";
-let model, labelContainer, maxPredictions;
+const emojis = ['🍎', '🍎', '🍇', '🍇', '🍊', '🍊', '🍓', '🍓', '🥕', '🥕', '🥦', '🥦', '🌽', '🌽', '🍄', '🍄'];
+let cards = [];
+let flippedCards = [];
+let matchedPairs = 0;
+let moves = 0;
+let isBusy = false;
 
-// 테마 관리
-const themeToggle = document.getElementById('theme-toggle');
-const body = document.body;
+const cardGrid = document.getElementById('card-grid');
+const movesDisplay = document.getElementById('moves');
+const pairsDisplay = document.getElementById('pairs');
 
-themeToggle.addEventListener('click', () => {
-  if (body.classList.contains('light-mode')) {
-    body.classList.replace('light-mode', 'dark-mode');
-    localStorage.setItem('theme', 'dark-mode');
-  } else {
-    body.classList.replace('dark-mode', 'light-mode');
-    localStorage.setItem('theme', 'light-mode');
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
   }
-});
-
-const savedTheme = localStorage.getItem('theme');
-if (savedTheme) body.className = savedTheme;
-
-// 모델 로드
-async function init() {
-  const modelURL = MODEL_URL + "model.json";
-  const metadataURL = MODEL_URL + "metadata.json";
-  model = await tmImage.load(modelURL, metadataURL);
-  maxPredictions = model.getTotalClasses();
-  console.log("모델 로드 완료");
+  return array;
 }
 
-init();
+function createCard(emoji) {
+  const card = document.createElement('div');
+  card.classList.add('card');
+  card.dataset.emoji = emoji;
+  card.innerText = '?';
+  card.addEventListener('click', () => flipCard(card));
+  return card;
+}
 
-// 이미지 업로드 및 분석
-const imageUpload = document.getElementById('image-upload');
-const imagePreview = document.getElementById('image-preview');
-const uploadContainer = document.getElementById('upload-container');
-const uploadPlaceholder = document.getElementById('upload-placeholder');
-const loading = document.getElementById('loading');
-const resultSection = document.getElementById('result-section');
-const resultTitle = document.getElementById('result-title');
-const labelContainerUI = document.getElementById('label-container');
-const retryBtn = document.getElementById('retry-btn');
+function flipCard(card) {
+  if (isBusy || card.classList.contains('flipped') || card.classList.contains('matched')) return;
 
-uploadContainer.addEventListener('click', () => imageUpload.click());
+  card.innerText = card.dataset.emoji;
+  card.classList.add('flipped');
+  flippedCards.push(card);
 
-imageUpload.addEventListener('change', async (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
+  if (flippedCards.length === 2) {
+    checkMatch();
+  }
+}
 
-  const reader = new FileReader();
-  reader.onload = async (event) => {
-    imagePreview.src = event.target.result;
-    imagePreview.hidden = false;
-    uploadPlaceholder.hidden = true;
-    
-    // 분석 시작
-    loading.hidden = false;
-    resultSection.hidden = true;
-    
-    const image = new Image();
-    image.src = event.target.result;
-    image.onload = async () => {
-      const prediction = await model.predict(image);
-      displayResults(prediction);
-    };
-  };
-  reader.readAsDataURL(file);
-});
+function checkMatch() {
+  isBusy = true;
+  moves++;
+  movesDisplay.innerText = moves;
 
-function displayResults(prediction) {
-  loading.hidden = true;
-  resultSection.hidden = false;
-  labelContainerUI.innerHTML = '';
-  
-  // 정렬: 확률이 높은 순서대로
-  prediction.sort((a, b) => b.probability - a.probability);
-  
-  const topResult = prediction[0];
-  resultTitle.innerText = `당신은 '${topResult.className}'상 입니다!`;
+  const [card1, card2] = flippedCards;
+  const isMatch = card1.dataset.emoji === card2.dataset.emoji;
 
-  prediction.forEach(p => {
-    const probability = (p.probability * 100).toFixed(2);
-    const barClass = p.className === '강아지' ? 'dog-bar' : (p.className === '고양이' ? 'cat-bar' : 'others-bar');
-    
-    const barHTML = `
-      <div class="bar-container">
-        <div class="bar-label">
-          <span>${p.className}</span>
-          <span>${probability}%</span>
-        </div>
-        <div class="bar-outer">
-          <div class="bar-inner ${barClass}" style="width: ${probability}%"></div>
-        </div>
-      </div>
-    `;
-    labelContainerUI.insertAdjacentHTML('beforeend', barHTML);
+  if (isMatch) {
+    card1.classList.add('matched');
+    card2.classList.add('matched');
+    matchedPairs++;
+    pairsDisplay.innerText = 8 - matchedPairs;
+    flippedCards = [];
+    isBusy = false;
+
+    if (matchedPairs === 8) {
+      setTimeout(() => alert('축하합니다! 모든 쌍을 맞추셨습니다. 두뇌가 더 건강해졌어요!'), 500);
+    }
+  } else {
+    setTimeout(() => {
+      card1.innerText = '?';
+      card2.innerText = '?';
+      card1.classList.remove('flipped');
+      card2.classList.remove('flipped');
+      flippedCards = [];
+      isBusy = false;
+    }, 1000);
+  }
+}
+
+function resetGame() {
+  cardGrid.innerHTML = '';
+  cards = shuffle([...emojis]);
+  matchedPairs = 0;
+  moves = 0;
+  movesDisplay.innerText = 0;
+  pairsDisplay.innerText = 8;
+  flippedCards = [];
+  isBusy = false;
+
+  cards.forEach(emoji => {
+    cardGrid.appendChild(createCard(emoji));
   });
 }
 
-retryBtn.addEventListener('click', () => {
-  imageUpload.value = '';
-  imagePreview.src = '';
-  imagePreview.hidden = true;
-  uploadPlaceholder.hidden = false;
-  resultSection.hidden = true;
-});
+// 초기 게임 시작
+document.addEventListener('DOMContentLoaded', resetGame);
