@@ -293,3 +293,83 @@ body {
   padding: 20px 0;
 }
 
+/* Responsive Design (Mobile/Tablet Optimization) */
+@media (max-width: 768px) {
+  body {
+    font-size: 18px;
+  }
+  
+  .main-header {
+    padding: 40px 0 30px;
+  }
+  
+  .main-header h1 {
+    font-size: 2.2rem;
+  }
+  
+  .game-wrapper, .article-card, .community-section {
+    padding: 25px 20px;
+  }
+  
+  .card-grid {
+    gap: 12px;
+  }
+  
+  .card {
+    font-size: 2.2rem;
+    border-radius: 12px;
+  }
+  
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .game-stats {
+    gap: 20px;
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-bar {
+    gap: 10px;
+    padding: 15px 0;
+  }
+  
+  .nav-link {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+  }
+  
+  .main-header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .tagline {
+    font-size: 1rem;
+  }
+  
+  .card-grid {
+    gap: 8px;
+  }
+  
+  .card {
+    font-size: 1.8rem;
+    border-radius: 10px;
+  }
+  
+  .btn-primary {
+    font-size: 1.2rem;
+    padding: 15px;
+  }
+  
+  .article-card h2 {
+    font-size: 1.4rem;
+  }
+  
+  .footer-content p {
+    font-size: 0.85rem;
+  }
+}
+
