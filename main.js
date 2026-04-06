@@ -1,3 +1,4 @@
+// v1.0.1: Updated Teachable Machine Model URL
 const MODEL_URL = "https://teachablemachine.withgoogle.com/models/n3n2ylBwS/";
 let model, labelContainer, maxPredictions;
 
