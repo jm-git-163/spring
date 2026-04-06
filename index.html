@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🐶🐱 동물상 테스트 (Animal Face Test)</title>
+  <title>🐶🐱 동물상 테스트 (Animal Face Test) - AI 사진 분석</title>
+  <meta name="description" content="인공지능(AI)이 분석하는 동물상 테스트! 당신은 강아지상일까요, 고양이상일까요? 지금 바로 확인해보세요.">
   <link href="./style.css" rel="stylesheet">
   <!-- TensorFlow.js 및 Teachable Machine Image 라이브러리 -->
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
@@ -11,14 +12,24 @@
 </head>
 <body class="light-mode">
   <div class="container">
+    <nav class="nav-bar">
+      <a href="./index.html" class="nav-link active">홈</a>
+      <a href="./about.html" class="nav-link">소개</a>
+      <a href="./privacy.html" class="nav-link">개인정보 처리방침</a>
+    </nav>
     <header>
       <h1>🐶🐱 동물상 테스트</h1>
       <button id="theme-toggle" class="btn-theme">🌓 테마 변경</button>
     </header>
     
+    <div class="ad-placeholder top-ad">
+      <!-- 구글 애드센스 상단 광고 코드를 여기에 삽입하세요 -->
+      <p style="font-size: 0.8rem; color: #999;">광고 공간</p>
+    </div>
+
     <main>
       <section class="upload-section">
-        <p class="subtitle">나의 동물상을 확인해보세요!</p>
+        <p class="subtitle">인공지능이 분석하는 나의 동물상</p>
         <div class="upload-container" id="upload-container">
           <input type="file" id="image-upload" accept="image/*" hidden>
           <div id="upload-placeholder" class="upload-placeholder">
@@ -40,7 +51,45 @@
         </div>
         <button id="retry-btn" class="btn-retry">다시 하기</button>
       </section>
+
+      <section class="info-section">
+        <h2>인공지능 동물상 테스트란?</h2>
+        <p>나의 얼굴 특징이 어떤 동물과 가장 닮았는지 궁금하신가요? 구글의 <strong>Teachable Machine</strong> AI 모델을 통해 당신의 동물상을 즉석에서 분석해 드립니다. 강아지상, 고양이상뿐만 아니라 다양한 동물상의 특징을 딥러닝 기술로 정확하게 찾아냅니다.</p>
+        
+        <h3>사용 방법</h3>
+        <p>1. 정면이 잘 보이는 사진을 준비합니다.<br>
+           2. 카메라 아이콘을 눌러 사진을 업로드합니다.<br>
+           3. 인공지능 분석이 끝날 때까지 잠시 기다립니다.<br>
+           4. 분석된 결과를 친구들과 공유하며 즐겨보세요!</p>
+
+        <h3>왜 우리 서비스를 이용해야 할까요?</h3>
+        <ul>
+          <li><strong>안전한 익명성:</strong> 로그인이 필요 없으며 사진 데이터는 수집되지 않습니다.</li>
+          <li><strong>빠른 속도:</strong> 복잡한 절차 없이 클릭 한 번으로 분석이 끝납니다.</li>
+          <li><strong>최신 AI 기술:</strong> 구글의 텐서플로우 기술을 활용하여 높은 정확도를 자랑합니다.</li>
+        </ul>
+      </section>
     </main>
+
+    <div class="ad-placeholder bottom-ad">
+      <!-- 구글 애드센스 하단 광고 코드를 여기에 삽입하세요 -->
+      <p style="font-size: 0.8rem; color: #999;">광고 공간</p>
+    </div>
+
+    <section class="contact-section">
+      <h3>🤝 제휴 및 서비스 문의</h3>
+      <form action="https://formspree.io/f/xdapybdb" method="POST" id="contact-form">
+        <div class="form-group">
+          <label for="email">이메일 주소</label>
+          <input type="email" name="email" id="email" placeholder="example@email.com" required>
+        </div>
+        <div class="form-group">
+          <label for="message">문의 내용</label>
+          <textarea name="message" id="message" rows="4" placeholder="문의하실 내용을 입력해주세요." required></textarea>
+        </div>
+        <button type="submit" class="btn-submit">문의 보내기</button>
+      </form>
+    </section>
 
     <section class="comments-section">
       <h3>💬 댓글</h3>
@@ -64,6 +113,14 @@
       </script>
       <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     </section>
+
+    <footer class="site-footer">
+      <p>&copy; 2026 동물상 테스트. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="./about.html">소개</a> | 
+        <a href="./privacy.html">개인정보 처리방침</a>
+      </div>
+    </footer>
   </div>
   <script defer src="./main.js"></script>
 </body>
