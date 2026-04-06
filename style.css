@@ -276,9 +276,20 @@ body {
   margin: 0 10px;
 }
 
-@media (max-width: 650px) {
-  .info-grid { grid-template-columns: 1fr; }
-  .card-grid { gap: 10px; }
-  .main-header h1 { font-size: 2rem; }
-  .article-card { padding: 25px; }
+/* Ad Labels and Spacing */
+.ad-section {
+  margin: 40px 0;
 }
+.ad-notice {
+  font-size: 0.8rem;
+  color: #bbb;
+  text-align: center;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.action-area {
+  margin-top: 30px;
+  padding: 20px 0;
+}
+
